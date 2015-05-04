@@ -9,6 +9,8 @@ type message interface {
 	Init(*Options, *tango.Context)
 }
 
+var _ message = &Message{}
+
 type Message struct {
 	opt         *Options
 	ctx         *tango.Context

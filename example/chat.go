@@ -30,8 +30,10 @@ func (c *Chat) Get() error {
 	if c.IsUpgrade() {
 		return c.OnConnected(func(ws *socket.Conn, sender chan []byte) {
 			fmt.Println("on connected")
+			addOnline(ws, sender)
 		}).OnReceived(func(ws *socket.Conn, data []byte) {
 			fmt.Println("on received", string(data))
+			sendMsg(ws, data)
 		}).OnClosed(func(ws *socket.Conn) {
 			fmt.Println("ws closed")
 		}).ListenAndServe()

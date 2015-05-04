@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"regexp"
@@ -150,7 +151,10 @@ func New(options ...Options) tango.HandlerFunc {
 		}
 
 		if c, ok := ctx.Action().(message); ok {
+			fmt.Println("ssssss")
 			c.Init(&opt, ctx)
+		} else {
+			panic("")
 		}
 		ctx.Next()
 	}

@@ -65,7 +65,7 @@ func newSocket(ws *websocket.Conn, o *Options, logger tango.Logger, onClosed fun
 		make(chan bool, 3),
 		make(chan error, 1),
 		make(chan bool, 1),
-		make(chan []byte),
+		make(chan []byte, o.MaxMessageSize),
 		nil,
 		logger,
 		onClosed,
@@ -192,9 +192,9 @@ func (c *Socket) send() {
 		// Ping the client
 		case <-c.ticker.C:
 			err := c.ping()
-			c.log.Debugf("%s", err)
+			c.log.Debugf("%v", err)
 			if err := c.ping(); err != nil {
-				c.log.Errorf("Error pinging socket: %s", err)
+				c.log.Errorf("Error pinging socket: %v", err)
 				c.disconnect <- err
 				return
 			}
